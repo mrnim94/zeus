@@ -20,12 +20,13 @@ func HandlerCreateDeleteKey(region string) {
 
 	s := gocron.NewScheduler(time.UTC)
 
-	rotationTask := func(userName string) {
+	rotationTask := func(userName string) error {
 		sess, err := session.NewSession(&aws.Config{
 			Region: aws.String(region)},
 		)
 		if err != nil {
 			log.Error("Error creating session: %v", err)
+			return err
 		}
 		// Create IAM service client
 		svc := iam.New(sess)
@@ -39,6 +40,7 @@ func HandlerCreateDeleteKey(region string) {
 		})
 		if err != nil {
 			log.Error("Error creating new access key: %v", err)
+			return err
 		}
 		fmt.Println("New Access Key ID:", *newAccessKey.AccessKey.AccessKeyId)
 		fmt.Println("New Secret Access Key:", *newAccessKey.AccessKey.SecretAccessKey)
@@ -65,6 +67,7 @@ func HandlerCreateDeleteKey(region string) {
 				}
 			}
 		}
+		return nil
 	}
 
 	for i, task := range cfg.Tasks {
