@@ -16,7 +16,7 @@ func init() {
 func main() {
 	e := echo.New()
 
-	handler.HandlerCreateDeleleKey("us-east-1")
+	handler.HandlerCreateDeleteKey("us-east-1")
 
 	e.Logger.Fatal(e.Start(":1323"))
 }

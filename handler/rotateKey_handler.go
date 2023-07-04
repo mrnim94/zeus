@@ -12,7 +12,7 @@ import (
 	"zeus/model"
 )
 
-func HandlerCreateDeleleKey(region string) {
+func HandlerCreateDeleteKey(region string) {
 
 	fmt.Println(region)
 	var cfg model.RotationKey
