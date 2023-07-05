@@ -17,14 +17,11 @@ func init() {
 func main() {
 
 	awsCloud := &aws_cloud_impl.AWSConfiguration{Region: "us-east-1"}
-
-	e := echo.New()
-
 	rotateKeyHandler := handler.RotateKeyHandler{
 		AWSCloud: aws_cloud_impl.NewAWSConnection(awsCloud),
 	}
 
+	e := echo.New()
 	rotateKeyHandler.HandlerCreateDeleteKey()
-
 	e.Logger.Fatal(e.Start(":1323"))
 }
