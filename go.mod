@@ -3,7 +3,7 @@ module zeus
 go 1.20
 
 require (
-	github.com/aws/aws-sdk-go v1.44.280
+	github.com/aws/aws-sdk-go v1.44.295
 	github.com/go-co-op/gocron v1.30.1
 	github.com/labstack/echo/v4 v4.10.2
 	github.com/labstack/gommon v0.4.0
