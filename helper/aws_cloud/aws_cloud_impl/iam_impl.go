@@ -33,7 +33,7 @@ func (ac *AWSConfiguration) RetentionAWSKey(userName string) (*iam.AccessKey, er
 		UserName: aws.String(userName),
 	})
 	if err != nil {
-		log.Error("Error listing access keys: %v", err)
+		log.Error("Error listing access keys: ", err)
 	}
 
 	// Step 3: Delete old access keys
@@ -46,7 +46,7 @@ func (ac *AWSConfiguration) RetentionAWSKey(userName string) (*iam.AccessKey, er
 			if err != nil {
 				log.Error("Error deleting access key %s: %v", *keyMetadata.AccessKeyId, err)
 			} else {
-				log.Info("Deleted old access key: %s\n", *keyMetadata.AccessKeyId)
+				log.Info("Deleted old access key: ", *keyMetadata.AccessKeyId)
 			}
 		}
 	}
