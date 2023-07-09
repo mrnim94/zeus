@@ -1,44 +1,56 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/go-co-op/gocron"
 	"time"
 	"zeus/helper"
 	"zeus/helper/aws_cloud"
+	"zeus/helper/k8s"
 	"zeus/log"
 	"zeus/model"
 )
 
 type RotateKeyHandler struct {
 	AWSCloud aws_cloud.AWSCloud
+	K8s      k8s.K8s
 }
 
 func (rk *RotateKeyHandler) HandlerCreateDeleteKey() {
 
 	var cfg model.RotationKey
 	helper.LoadConfigFile(&cfg)
+	log.Info("Load config file schedules")
 
 	s := gocron.NewScheduler(time.UTC)
 
-	rotationTask := func(userName string) error {
-		accessKey, err := rk.AWSCloud.RetentionAWSKey(userName)
+	rotationTask := func(schedule model.Schedule) error {
+		accessKey, err := rk.AWSCloud.RetentionAWSKey(schedule.UsernameOnAws)
 
 		if err != nil {
-			log.Error("Error creating session: %v", err)
+			log.Error("Error rotating session: %v", err)
 			return err
 		}
 
-		fmt.Println("New Access Key ID:", *accessKey.AccessKeyId)
-		fmt.Println("New Secret Access Key:", *accessKey.SecretAccessKey)
+		log.Info("Update New Access Key ID:", *accessKey.AccessKeyId)
+		err = rk.K8s.UpdateSecret(schedule.NamespaceOnK8s, schedule.AccessKeyOnK8S.Name, schedule.AccessKeyOnK8S.Key, *accessKey.AccessKeyId)
+		if err != nil {
+			log.Error(err)
+			return err
+		}
+		log.Info("Update New Secret Access Key: ******")
+		err = rk.K8s.UpdateSecret(schedule.NamespaceOnK8s, schedule.AccessKeyOnK8S.Name, schedule.SecretKeyOnK8S.Key, *accessKey.SecretAccessKey)
+		if err != nil {
+			log.Error(err)
+			return err
+		}
 
 		return nil
 	}
 
-	for i, task := range cfg.Tasks {
-		task := task
-		log.Info("Setup Schedule ", i, " ==> ", task.Cron)
-		_, err := s.Cron(task.Cron).Do(rotationTask, task.UsernameOnAws)
+	for i, schedule := range cfg.Schedules {
+		schedule := schedule
+		log.Info("Setup Schedule ", i, " ==> ", schedule.Cron)
+		_, err := s.Cron(schedule.Cron).Do(rotationTask, schedule)
 		if err != nil {
 			log.Error(err)
 		}

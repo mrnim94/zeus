@@ -7,7 +7,6 @@ import (
 )
 
 func (ac *AWSConfiguration) RetentionAWSKey(userName string) (*iam.AccessKey, error) {
-
 	sess, err := ac.accessAWSCloud()
 	if err != nil {
 		log.Error("Error creating new access key: %v", err)
