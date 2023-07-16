@@ -44,6 +44,16 @@ func (rk *RotateKeyHandler) HandlerCreateDeleteKey() {
 			return err
 		}
 
+		for i, workload := range schedule.RestartWorkloads {
+			workload := workload
+			log.Info("Restart ", i, " ==> ", workload.Kind, " -->> ", workload.Name, "in namespace ", schedule.NamespaceOnK8s)
+			err := rk.K8s.RestartWorkloads(schedule.NamespaceOnK8s, workload.Kind, workload.Name)
+			if err != nil {
+				log.Error(err)
+				return err
+			}
+		}
+
 		return nil
 	}
 
