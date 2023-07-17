@@ -1,8 +1,9 @@
 package aws_cloud_impl
 
 import (
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/session"
+	"context"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/config"
 	"zeus/helper/aws_cloud"
 	"zeus/log"
 )
@@ -17,15 +18,14 @@ func NewAWSConnection(ac *AWSConfiguration) aws_cloud.AWSCloud {
 	}
 }
 
-func (ac *AWSConfiguration) accessAWSCloud() (*session.Session, error) {
+func (ac *AWSConfiguration) accessAWSCloud() (aws.Config, error) {
 
-	sess, err := session.NewSession(&aws.Config{
-		Region: aws.String(ac.Region)},
+	cfg, err := config.LoadDefaultConfig(context.TODO(),
+		config.WithRegion(ac.Region),
 	)
 	if err != nil {
-		log.Error("Error creating session: %v", err)
-		return nil, err
+		log.Error("Unable to load AWS SDK config, ", err)
 	}
 
-	return sess, nil
+	return cfg, nil
 }
