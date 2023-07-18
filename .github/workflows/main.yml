@@ -1,0 +1,66 @@
+name: ci
+on:
+  push:
+    branches:
+      - "master"
+    tags:
+      - '*.*.*'
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    name: zeus-rotations
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Run TruffleHog
+        run: |
+          docker pull dxa4481/trufflehog
+          docker run -v ${{ github.workspace }}:/target dxa4481/trufflehog --entropy=False file:///target
+      - name: List files in path
+        run: ls -la .
+      - name: Depcheck
+        uses: dependency-check/Dependency-Check_Action@main
+        id: Depcheck
+        with:
+          project: 'zeus-rotations'
+          path: '.'
+          format: 'HTML'
+          out: 'reports' # this is the default, no need to specify unless you wish to override it
+          args: >
+            --failOnCVSS 0
+            --enableRetired
+      - name: Upload Test results
+        uses: actions/upload-artifact@master
+        with:
+           name: Depcheck report
+           path: ${{github.workspace}}/reports
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/zeus-rotations:latest, ${{ secrets.DOCKER_HUB_USERNAME }}/zeus-rotations:${{ env.RELEASE_VERSION }}
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.DOCKER_HUB_USERNAME }}/zeus-rotations:${{ env.RELEASE_VERSION }}
+          format: 'table'
+          exit-code: '0'
+          severity: 'HIGH'
+      - name: Run Trivy vulnerability scanner (CRITICAL)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.DOCKER_HUB_USERNAME }}/zeus-rotations:${{ env.RELEASE_VERSION }}
+          format: 'table'
+          exit-code: '1'
+          severity: 'CRITICAL'
