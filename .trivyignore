@@ -1,1 +1,1 @@
-CRITICAL: AWS (aws-access-key-id)
+CRITICAL:AWS (aws-access-key-id) /go/pkg/mod/github.com/aws/aws-sdk-go-v2/service/sts@v1.19.3/api_op_GetAccessKeyInfo.go:14
