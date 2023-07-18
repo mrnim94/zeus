@@ -3,7 +3,7 @@ module zeus
 go 1.20
 
 require (
-	github.com/aws/aws-sdk-go v1.44.301
+	github.com/aws/aws-sdk-go v1.44.302
 	github.com/aws/aws-sdk-go-v2 v1.19.0
 	github.com/aws/aws-sdk-go-v2/config v1.18.28
 	github.com/aws/aws-sdk-go-v2/service/iam v1.21.1
