@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  zeus:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-07-20T14:48:05.918515849Z"
+    description: A Helm chart for Kubernetes
+    digest: 4ea7244c6dad5ecc374cc2c858a14e2a3987b32655553624d46b31b7f6f67843
+    name: zeus
+    type: application
+    urls:
+    - https://mrnim94.github.io/zeus/helm-chart/zeus-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-07-20T14:48:05.917554404Z"
