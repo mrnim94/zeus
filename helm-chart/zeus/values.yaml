@@ -81,3 +81,19 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+config: {}
+  # schedules:
+  #   - name: change-key-aws
+  #     cron: "*/1 * * * *"
+  #     usernameOnAws: nimtechnology
+  #     namespaceOnK8s: default
+  #     accessKeyOnK8s:
+  #       name: secret-aws
+  #       key: accesskey
+  #     secretKeyOnK8s:
+  #       name: secret-aws
+  #       key: secretkey
+  #     restartWorkloads:
+  #       - kind: deployment
+  #         name: "argo-workflow-argo-workflows-server"
