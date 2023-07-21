@@ -30,7 +30,7 @@ spec:
       volumes:
         - configMap:
             items:
-              - key: relay
+              - key: schedules
                 path: schedules.yaml
             name: {{ include "zeus.fullname" . }}
           name: {{ include "zeus.fullname" . }}-configmap
