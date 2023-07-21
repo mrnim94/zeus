@@ -32,7 +32,7 @@ spec:
             items:
               - key: relay
                 path: schedules.yaml
-            name: schedules
+            name: {{ include "zeus.fullname" . }}
           name: {{ include "zeus.fullname" . }}-configmap
       containers:
         - name: {{ .Chart.Name }}
