@@ -117,6 +117,26 @@ spec:
                   name: "argo-workflow-argo-workflows-server"
 ```
 
+### Explain the schedule configuration.
+
+| Key | Value | Type | Description |
+| --- | --- | --- | --- |
+| **schedules** |  | Object | Schedule configurations |
+| - name | change-key-aws | String | Name of the schedule |
+| - cron | */1 * * * * | Cron String | Cron schedule, runs every minute |
+| - usernameOnAws | thang.tran | String | AWS username |
+| - namespaceOnK8s | default | String | Kubernetes namespace |
+| **accessKeyOnK8s** |  | Object | AWS Access Key configurations on K8s |
+| - name | secret-aws | String | Name of the secret for AWS access key |
+| - key | accesskey | String | Key for the AWS access key |
+| **secretKeyOnK8s** |  | Object | AWS Secret Key configurations on K8s |
+| - name | secret-aws | String | Name of the secret for AWS secret key |
+| - key | secretkey | String | Key for the AWS secret key |
+| **restartWorkloads** |  | Object | Workload configurations that need to be restarted |
+| - kind | deployment | String | Kind of the workload (e.g., deployment) |
+| - name | argo-workflow-argo-workflows-server | String | Name of the workload to be restarted |
+
+
 
 ## Publish Helm Chart
 
