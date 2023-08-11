@@ -18,7 +18,14 @@ func init() {
 
 func main() {
 
-	awsCloud := &aws_cloud_impl.AWSConfiguration{Region: "us-east-1"}
+	awsRegion, ok := os.LookupEnv("AWS_REGION")
+	if !ok {
+		os.Setenv("AWS_REGION", "us-east-1")
+	} else {
+		log.Info("Zeus is working on ", awsRegion)
+	}
+
+	awsCloud := &aws_cloud_impl.AWSConfiguration{Region: awsRegion}
 
 	kubeconfig := flag.String("kubeconfig", ".kube/config", "location to your confighihi file")
 	kube := &k8s_impl.KubeConfiguration{KubeConfig: *kubeconfig}

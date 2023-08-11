@@ -82,6 +82,9 @@ tolerations: []
 
 affinity: {}
 
+envVars: {}
+#  AWS_REGION: us-east-1
+
 config: {}
   # schedules:
   #   - name: change-key-aws
@@ -97,3 +100,4 @@ config: {}
   #     restartWorkloads:
   #       - kind: deployment
   #         name: "argo-workflow-argo-workflows-server"
+
