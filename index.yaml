@@ -2,8 +2,18 @@ apiVersion: v1
 entries:
   zeus:
   - apiVersion: v2
+    appVersion: 0.0.2
+    created: "2023-08-11T08:35:02.785768127Z"
+    description: A Helm chart for Kubernetes
+    digest: 57560bb808fed8e44fe00b9d929401a49c1677e68439c2a3ed909e580b51ce3f
+    name: zeus
+    type: application
+    urls:
+    - https://mrnim94.github.io/zeus/helm-chart/zeus-0.1.7.tgz
+    version: 0.1.7
+  - apiVersion: v2
     appVersion: 0.0.1
-    created: "2023-07-23T07:38:34.873254943Z"
+    created: "2023-08-11T08:35:02.784981426Z"
     description: A Helm chart for Kubernetes
     digest: 21bb0e613a0c581457b6c74a9a385d61764b1ca89bf1dcb9e6bb5f218601fde4
     name: zeus
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://mrnim94.github.io/zeus/helm-chart/zeus-0.1.6.tgz
     version: 0.1.6
-generated: "2023-07-23T07:38:34.872021498Z"
+generated: "2023-08-11T08:35:02.783911651Z"
