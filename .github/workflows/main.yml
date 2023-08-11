@@ -50,13 +50,6 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/zeus-rotations:latest, ${{ secrets.DOCKER_HUB_USERNAME }}/zeus-rotations:${{ env.RELEASE_VERSION }}
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: ${{ secrets.DOCKER_HUB_USERNAME }}/zeus-rotations:${{ env.RELEASE_VERSION }}
-          format: 'table'
-          exit-code: '0'
-          severity: 'HIGH'
       - name: Run Trivy vulnerability scanner (CRITICAL)
         uses: aquasecurity/trivy-action@master
         with:
@@ -65,4 +58,11 @@ jobs:
           exit-code: '1'
           severity: 'CRITICAL'
           #https://github.com/aquasecurity/trivy/issues/4826
-          skip-files: '/go/pkg/mod/github.com/aws/aws-sdk-go-v2/service/sts@v1.19.3/api_op_GetAccessKeyInfo.go'
+          skip-files: '/go/pkg/mod/github.com/aws/aws-sdk-go-v2/service/sts@v1.21.2/api_op_GetAccessKeyInfo.go'
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ secrets.DOCKER_HUB_USERNAME }}/zeus-rotations:${{ env.RELEASE_VERSION }}
+          format: 'table'
+          exit-code: '0'
+          severity: 'HIGH'
