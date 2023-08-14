@@ -31,17 +31,26 @@ func (rk *RotateKeyHandler) HandlerCreateDeleteKey() {
 			return err
 		}
 
-		log.Info("Update New Access Key ID:", *accessKey.AccessKey.AccessKeyId)
-		err = rk.K8s.UpdateSecret(schedule.NamespaceOnK8s, schedule.AccessKeyOnK8S.Name, schedule.AccessKeyOnK8S.Key, *accessKey.AccessKey.AccessKeyId)
-		if err != nil {
-			log.Error(err)
-			return err
-		}
-		log.Info("Update New Secret Access Key: ******")
-		err = rk.K8s.UpdateSecret(schedule.NamespaceOnK8s, schedule.AccessKeyOnK8S.Name, schedule.SecretKeyOnK8S.Key, *accessKey.AccessKey.SecretAccessKey)
-		if err != nil {
-			log.Error(err)
-			return err
+		switch {
+		case schedule.CredentialOnK8S.Name != "":
+			log.Info("Action rotates credential: ", schedule.CredentialOnK8S.Name)
+			rk.K8s.UpdateCredentialInSecret(schedule.NamespaceOnK8s, schedule.CredentialOnK8S.Name, schedule.CredentialOnK8S.Key, schedule.CredentialOnK8S.Profile, accessKey)
+
+		case schedule.AccessKeyOnK8S.Name != "" && schedule.SecretKeyOnK8S.Name != "":
+			log.Info("Update New Access Key ID:", *accessKey.AccessKey.AccessKeyId)
+			err = rk.K8s.UpdateSecret(schedule.NamespaceOnK8s, schedule.AccessKeyOnK8S.Name, schedule.AccessKeyOnK8S.Key, *accessKey.AccessKey.AccessKeyId)
+			if err != nil {
+				log.Error(err)
+				return err
+			}
+			log.Info("Update New Secret Access Key: ******")
+			err = rk.K8s.UpdateSecret(schedule.NamespaceOnK8s, schedule.AccessKeyOnK8S.Name, schedule.SecretKeyOnK8S.Key, *accessKey.AccessKey.SecretAccessKey)
+			if err != nil {
+				log.Error(err)
+				return err
+			}
+		default:
+			return nil
 		}
 
 		for i, workload := range schedule.RestartWorkloads {

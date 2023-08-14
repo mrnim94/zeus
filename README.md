@@ -104,8 +104,6 @@ spec:
         serviceAccount:
           annotations:
             eks.amazonaws.com/role-arn: "arn:aws:iam::043XXXXX1869:role/irsa-zeus-rotations-dev-irsa-iam-role"
-        envVars:
-          AWS_REGION: us-east-1
         config:
           schedules:
             - name: change-key-aws

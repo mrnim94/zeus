@@ -17,10 +17,15 @@ type Schedule struct {
 	AccessKeyOnK8S struct {
 		Name string `yaml:"name"`
 		Key  string `yaml:"key"`
-	} `yaml:"accessKeyOnK8s"`
+	} `yaml:"accessKeyOnK8s,omitempty"`
 	SecretKeyOnK8S struct {
 		Name string `yaml:"name"`
 		Key  string `yaml:"key"`
-	} `yaml:"secretKeyOnK8s"`
+	} `yaml:"secretKeyOnK8s,omitempty"`
 	RestartWorkloads []RestartWorkloads `yaml:"restartWorkloads"`
+	CredentialOnK8S  struct {
+		Name    string `yaml:"name"`
+		Key     string `yaml:"key"`
+		Profile string `yaml:"profile"`
+	} `yaml:"credentialOnK8s,omitempty"`
 }
