@@ -108,40 +108,43 @@ spec:
           AWS_REGION: us-east-1
         config:
           schedules:
-            - name: change-key-aws
-              cron: "*/1 * * * *"
-              usernameOnAws: thang.tran
-              namespaceOnK8s: default
-              accessKeyOnK8s:
-                name: secret-aws
-                key: accesskey
-              secretKeyOnK8s:
-                name: secret-aws
-                key: secretkey
-              restartWorkloads:
-                - kind: deployment
-                  name: "argo-workflow-argo-workflows-server"
+          - name: change-credetial-aws
+            cron: "*/1 * * * *"
+            usernameOnAws: nimtechnology
+            namespaceOnK8s: default
+            locations:
+              - secretName: credentials-aws
+                style: CredentialOnK8s
+                credentialOnK8s: credentials
+                profile: dev
+              - secretName: secret-aws
+                style: AccessKeyOnK8s
+                accessKeyOnK8s: accesskey
+                secretKeyOnK8s: secretkey
+            restartWorkloads:
+              - kind: deployment
+                name: "argo-workflow-argo-workflows-server"
 ```
 
 ### Explain the schedule configuration.
 
-| Key | Value | Type | Description |
-| --- | --- | --- | --- |
-| **schedules** |  | Object | Schedule configurations |
-| - name | change-key-aws | String | Name of the schedule |
-| - cron | */1 * * * * | Cron String | Cron schedule, runs every minute |
-| - usernameOnAws | thang.tran | String | AWS username |
-| - namespaceOnK8s | default | String | Kubernetes namespace |
-| **accessKeyOnK8s** |  | Object | AWS Access Key configurations on K8s |
-| - name | secret-aws | String | Name of the secret for AWS access key |
-| - key | accesskey | String | Key for the AWS access key |
-| **secretKeyOnK8s** |  | Object | AWS Secret Key configurations on K8s |
-| - name | secret-aws | String | Name of the secret for AWS secret key |
-| - key | secretkey | String | Key for the AWS secret key |
-| **restartWorkloads** |  | Object | Workload configurations that need to be restarted |
-| - kind | deployment | String | Kind of the workload (e.g., deployment) |
-| - name | argo-workflow-argo-workflows-server | String | Name of the workload to be restarted |
-
+| Level 1       | Level 2          | Level 3                                                       | Value                                 | Type        | Description                                       |
+|---------------|------------------|---------------------------------------------------------------|---------------------------------------|-------------|---------------------------------------------------|
+| **schedules** |                  |                                                               | - (list of schedules)                 | List        | Top-level list for all schedule configurations    |
+|               | name             |                                                               | change-credetial-aws                  | String      | Name of the schedule                              |
+|               | cron             |                                                               | */1 * * * *                           | Cron String | Cron schedule, runs every minute                  |
+|               | usernameOnAws    |                                                               | nimtechnology                         | String      | AWS username                                      |
+|               | namespaceOnK8s   |                                                               | default                               | String      | Kubernetes namespace                              |
+|               | locations        |                                                               | - (list of locations)                 | List        | List of location configurations for the schedule  |
+|               |                  | secretName                                                    | credentials-aws                       | String      | Name of the secret in Kubernetes                  |
+|               |                  | style                                                         | `CredentialOnK8s` or `AccessKeyOnK8s` | String      | Style/type of the credential                      |
+|               |                  | **credentialOnK8s** (require when style is `CredentialOnK8s`) | credentials                           | String      | Key Name of Secret is holding AWS credential      |
+|               |                  | **profile** (require when style is `CredentialOnK8s`)         | dev                                   | String      | AWS profile in credential that you want to change |
+|               |                  | **accessKeyOnK8s** (require when style is `AccessKeyOnK8s`)   | accesskey                             | String      | Key Name of Secret is holding AWS access key      |
+|               |                  | **secretKeyOnK8s** (require when style is `AccessKeyOnK8s`)   | secretkey                             | String      | Key Name of Secret is holding AWS secret key      |
+|               | restartWorkloads |                                                               | - (list of workloads)                 | List        | List of workloads to restart on schedule change   |
+|               |                  | kind                                                          | deployment                            | String      | Type of the Kubernetes workload                   |
+|               |                  | name                                                          | argo-workflow-argo-workflows-server   | String      | Name of the Kubernetes workload                   |
 
 
 ## Publish Helm Chart
