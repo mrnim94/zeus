@@ -57,11 +57,13 @@ spec:
           volumeMounts:
             - mountPath: /go/src/zeus/config_file
               name: {{ include "zeus.fullname" . }}-configmap
+          {{- if .Values.envVars }}
           env:
-          {{- range $key, $value := .Values.envVars }}
-            - name: { { $key } }
-              value: { { $value | quote } }
-          { { - end } }
+            {{- range $key, $value := .Values.envVars }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
