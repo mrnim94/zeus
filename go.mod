@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.20.3
 	github.com/aws/aws-sdk-go-v2/config v1.18.35
 	github.com/aws/aws-sdk-go-v2/service/iam v1.22.4
-	github.com/go-co-op/gocron v1.31.1
+	github.com/go-co-op/gocron v1.31.2
 	github.com/labstack/echo/v4 v4.11.1
 	github.com/labstack/gommon v0.4.0
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
