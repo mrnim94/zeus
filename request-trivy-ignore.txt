@@ -1,2 +1,3 @@
 # AWS SDK hardcoded access key example
 CRITICAL: AWS (aws-access-key-id)
+AWS Access Key ID
