@@ -70,8 +70,8 @@ func (rk *RotateKeyHandler) HandlerCreateDeleteKey() {
 			err = rk.AWSCloud.DeleteAWSKey(schedule.UsernameOnAws, oldKey)
 			if err != nil {
 				log.Error(err)
+				return err
 			}
-			return err
 		}
 
 		return nil

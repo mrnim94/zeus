@@ -45,8 +45,6 @@ func (kc *KubeConfiguration) RestartWorkloads(namespace, kind, workload string) 
 		}
 
 		if deployment.Status.ReadyReplicas == deployment.Status.Replicas {
-			println(deployment.Status.ReadyReplicas)
-			println(deployment.Status.Replicas)
 			log.Info("Deployment has been restarted and all pods are ready!")
 			break
 		}
