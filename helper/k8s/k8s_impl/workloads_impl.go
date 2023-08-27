@@ -37,5 +37,21 @@ func (kc *KubeConfiguration) RestartWorkloads(namespace, kind, workload string) 
 
 	log.Info("Successfully restarted deployment ", workload, "  in namespace ", namespace)
 
+	// Check the status of the deployment
+	for {
+		deployment, err := clientset.AppsV1().Deployments(namespace).Get(context.TODO(), workload, metav1.GetOptions{})
+		if err != nil {
+			panic(err.Error())
+		}
+
+		if deployment.Status.ReadyReplicas == deployment.Status.Replicas {
+			log.Info("Deployment has been restarted and all pods are ready!")
+			break
+		}
+
+		log.Info("Waiting for deployment to be ready...")
+		time.Sleep(10 * time.Second)
+	}
+
 	return nil
 }

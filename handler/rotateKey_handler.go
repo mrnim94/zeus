@@ -24,7 +24,7 @@ func (rk *RotateKeyHandler) HandlerCreateDeleteKey() {
 	s := gocron.NewScheduler(time.UTC)
 
 	rotationTask := func(schedule model.Schedule) error {
-		accessKey, err := rk.AWSCloud.RetentionAWSKey(schedule.UsernameOnAws)
+		accessKey, listOldKeys, err := rk.AWSCloud.RetentionAWSKey(schedule.UsernameOnAws)
 
 		if err != nil {
 			log.Error("Error rotating session: %v", err)
@@ -66,6 +66,14 @@ func (rk *RotateKeyHandler) HandlerCreateDeleteKey() {
 			}
 		}
 
+		for _, oldKey := range listOldKeys.ListOLDKeys {
+			err = rk.AWSCloud.DeleteAWSKey(schedule.UsernameOnAws, oldKey)
+			if err != nil {
+				log.Error(err)
+				return err
+			}
+		}
+
 		return nil
 	}
 
@@ -78,5 +86,6 @@ func (rk *RotateKeyHandler) HandlerCreateDeleteKey() {
 		}
 
 	}
+
 	s.StartAsync()
 }

@@ -5,13 +5,38 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	"zeus/log"
+	"zeus/model"
 )
 
-func (ac *AWSConfiguration) RetentionAWSKey(userName string) (*iam.CreateAccessKeyOutput, error) {
+func (ac *AWSConfiguration) DeleteAWSKey(userName string, accessKeyId string) error {
+
 	cfg, err := ac.accessAWSCloud()
 	if err != nil {
 		log.Error("Error creating new access key: %v", err)
-		return nil, err
+		return err
+	}
+
+	client := iam.NewFromConfig(cfg)
+
+	_, err = client.DeleteAccessKey(context.TODO(), &iam.DeleteAccessKeyInput{
+		UserName:    aws.String(userName),
+		AccessKeyId: aws.String(accessKeyId),
+	})
+	if err != nil {
+		log.Error("Error deleting access key %s: %v", accessKeyId, err)
+		return err
+	} else {
+		log.Info("Deleted old access key: ", accessKeyId)
+	}
+	return nil
+}
+
+func (ac *AWSConfiguration) RetentionAWSKey(userName string) (*iam.CreateAccessKeyOutput, model.OldAWSCredential, error) {
+	var oldCreds model.OldAWSCredential
+	cfg, err := ac.accessAWSCloud()
+	if err != nil {
+		log.Error("Error creating new access key: %v", err)
+		return nil, oldCreds, err
 	}
 
 	// Create IAM client
@@ -23,7 +48,7 @@ func (ac *AWSConfiguration) RetentionAWSKey(userName string) (*iam.CreateAccessK
 	})
 	if err != nil {
 		log.Error("Error creating new access key: %v", err)
-		return nil, err
+		return nil, oldCreds, err
 	}
 
 	// Step 2: List old access keys
@@ -37,17 +62,9 @@ func (ac *AWSConfiguration) RetentionAWSKey(userName string) (*iam.CreateAccessK
 	// Step 3: Delete old access keys
 	for _, keyMetadata := range oldAccessKeys.AccessKeyMetadata {
 		if *keyMetadata.AccessKeyId != *newAccessKey.AccessKey.AccessKeyId {
-			_, err := client.DeleteAccessKey(context.TODO(), &iam.DeleteAccessKeyInput{
-				UserName:    aws.String(userName),
-				AccessKeyId: aws.String(*keyMetadata.AccessKeyId),
-			})
-			if err != nil {
-				log.Error("Error deleting access key %s: %v", *keyMetadata.AccessKeyId, err)
-			} else {
-				log.Info("Deleted old access key: ", *keyMetadata.AccessKeyId)
-			}
+			oldCreds.ListOLDKeys = append(oldCreds.ListOLDKeys, *keyMetadata.AccessKeyId)
 		}
 	}
 
-	return newAccessKey, nil
+	return newAccessKey, oldCreds, nil
 }
