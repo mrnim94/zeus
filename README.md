@@ -146,6 +146,13 @@ spec:
 |               |                  | kind                                                          | deployment                            | String      | Type of the Kubernetes workload                   |
 |               |                  | name                                                          | argo-workflow-argo-workflows-server   | String      | Name of the Kubernetes workload                   |
 
+## zeus-rotations on quay.io   
+If your eks encounter the pull rate limits with the images on Docker Hub.   
+YOu can use image on Quay.io
+
+```
+docker pull quay.io/nimtechnology/zeus-rotations
+```
 
 ## Publish Helm Chart
 
