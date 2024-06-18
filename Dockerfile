@@ -14,7 +14,7 @@ WORKDIR $GOPATH/src/zeus
 COPY . .
 
 RUN go mod download
-RUN GOOS=linux go build -o app
+RUN GOOS=linux go build -o app -buildvcs=false
 ENTRYPOINT ["./app"]
 
 EXPOSE 1994
