@@ -14,8 +14,7 @@ WORKDIR $GOPATH/src/zeus
 COPY . .
 
 RUN go mod download
-RUN GOOS=linux go build -o app
-# with bitbucket pipeline: RUN GOOS=linux go build -o app -buildvcs=false
+RUN GOOS=linux go build -o app -buildvcs=false
 ENTRYPOINT ["./app"]
 
 EXPOSE 1994
