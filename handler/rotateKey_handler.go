@@ -77,14 +77,32 @@ func (rk *RotateKeyHandler) HandlerCreateDeleteKey() {
 		return nil
 	}
 
+	deteleTask := func(schedule model.Schedule) error {
+		log.Debug("Only delete access key!")
+		err := rk.AWSCloud.DeleteAllAWSKey(schedule.UsernameOnAws)
+		if err != nil {
+			log.Error(err)
+			return err
+		}
+		return nil
+	}
+
 	for i, schedule := range cfg.Schedules {
 		schedule := schedule
 		log.Info("Setup Schedule ", i, " ==> ", schedule.Cron)
-		_, err := s.Cron(schedule.Cron).Do(rotationTask, schedule)
-		if err != nil {
-			log.Error(err)
-		}
 
+		switch action := schedule.Action; action {
+		case "OnlyDeleteAccessKey":
+			_, err := s.Cron(schedule.Cron).Do(deteleTask, schedule)
+			if err != nil {
+				log.Error(err)
+			}
+		default:
+			_, err := s.Cron(schedule.Cron).Do(rotationTask, schedule)
+			if err != nil {
+				log.Error(err)
+			}
+		}
 	}
 
 	s.StartAsync()

@@ -3,7 +3,7 @@ package log
 import (
 	"encoding/json"
 	"github.com/labstack/echo/v4"
-	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
+	rotatelogs "github.com/mrnim94/file-rotatelogs"
 	"io"
 	"os"
 	"runtime"
@@ -487,4 +487,28 @@ func (l *MyLogger) Panicj(j log.JSON) {
 
 func (l *MyLogger) SetHeader(h string) {
 	l.Logger.Info("Not implement yet")
+}
+
+// getLogLevel returns the log.Lvl based on the environment variable value.
+func GetLogLevel(envVar string) log.Lvl {
+	envLogLevel := os.Getenv(envVar)
+	if envLogLevel == "" {
+		envLogLevel = "INFO" // default level
+	}
+
+	switch envLogLevel {
+	case "DEBUG":
+		return log.DEBUG
+	case "INFO":
+		return log.INFO
+	case "WARN":
+		return log.WARN
+	case "ERROR":
+		return log.ERROR
+	case "OFF":
+		return log.OFF
+	default:
+		log.Fatalf("Invalid log level: %s", envLogLevel)
+		return log.INFO // default level in case of failure
+	}
 }
