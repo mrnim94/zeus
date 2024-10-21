@@ -31,6 +31,50 @@ func (ac *AWSConfiguration) DeleteAWSKey(userName string, accessKeyId string) er
 	return nil
 }
 
+func (ac *AWSConfiguration) DeleteAllAWSKey(userName string) error {
+	cfg, err := ac.accessAWSCloud()
+	if err != nil {
+		log.Error("Error creating new access key: %v", err)
+		return err
+	}
+
+	client := iam.NewFromConfig(cfg)
+
+	// List all access keys for the user
+	listKeysInput := &iam.ListAccessKeysInput{
+		UserName: aws.String(userName),
+	}
+
+	resp, err := client.ListAccessKeys(context.TODO(), listKeysInput)
+	if err != nil {
+		log.Error("unable to list access keys for user %s: %w", userName, err)
+		return err
+	}
+	// Iterate through each access key and delete it
+	for _, key := range resp.AccessKeyMetadata {
+		err := deleteAccessKey(client, userName, *key.AccessKeyId)
+		if err != nil {
+			log.Errorf("Failed to delete access key %s for user %s: %v", *key.AccessKeyId, userName, err)
+		} else {
+			log.Infof("Deleted access key %s for user %s", *key.AccessKeyId, userName)
+		}
+	}
+
+	return nil
+}
+
+func deleteAccessKey(client *iam.Client, userName string, accessKeyID string) error {
+	_, err := client.DeleteAccessKey(context.TODO(), &iam.DeleteAccessKeyInput{
+		UserName:    aws.String(userName),
+		AccessKeyId: aws.String(accessKeyID),
+	})
+	if err != nil {
+		log.Errorf("unable to delete access key %s for user %s: %w", accessKeyID, userName, err)
+		return err
+	}
+	return nil
+}
+
 func (ac *AWSConfiguration) RetentionAWSKey(userName string) (*iam.CreateAccessKeyOutput, model.OldAWSCredential, error) {
 	var oldCreds model.OldAWSCredential
 	cfg, err := ac.accessAWSCloud()

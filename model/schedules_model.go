@@ -22,6 +22,7 @@ type Schedule struct {
 	Name             string             `yaml:"name"`
 	Cron             string             `yaml:"cron"`
 	UsernameOnAws    string             `yaml:"usernameOnAws"`
+	Action           string             `yaml:"action"`
 	NamespaceOnK8s   string             `yaml:"namespaceOnK8s"`
 	Locations        []Locations        `yaml:"locations"`
 	RestartWorkloads []RestartWorkloads `yaml:"restartWorkloads"`

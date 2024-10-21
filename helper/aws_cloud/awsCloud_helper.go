@@ -8,4 +8,5 @@ import (
 type AWSCloud interface {
 	RetentionAWSKey(userName string) (*iam.CreateAccessKeyOutput, model.OldAWSCredential, error)
 	DeleteAWSKey(userName string, accessKeyId string) error
+	DeleteAllAWSKey(userName string) error
 }
