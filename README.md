@@ -1,7 +1,8 @@
-## [![Zeus Rotations](https://nimtechnology.com/wp-content/uploads/2023/07/2185568.png)](https://nimtechnology.com/2023/07/02/zeus-retention-project/)
-Zeus Rotations
+<h1 align="center" style="border-bottom: none">
+    <a href="https://nimtechnology.com/2023/07/02/zeus-retention-project/" target="_blank"><img alt="Zeus Rotation" width="120px" src="https://nimtechnology.com/wp-content/uploads/2023/07/2185568.png"></a><br>Zeus Rotations
+</h1>
 
-Auto Rotations AWS key on Kubernetes
+<p align="center">Auto Rotations AWS key on Kubernetes</p>
 
 ## Instroduction
 
