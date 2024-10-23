@@ -7,11 +7,6 @@ Auto Rotations AWS key on Kubernetes
 
 Zeus is the platform to help you to rotate the AWS Access and Secret Key, which are saved in secret on EKS
 
-| Status |   |
-| --- | --- |
-| Stability | \[alpha\]: Step 4: Recheck features and write Dockerfile,... |
-| Distributions | \[Nimtechnology\] |
-| Issues | ![Open issues](https://img.shields.io/github/issues-search/mrnim94/zeus?query=is%3Aissue%20is%3Aopen%20label%3Abug%20&label=open&color=orange&logo=github) ![Closed issues](https://img.shields.io/github/issues-search/mrnim94/zeus?query=is%3Aissue%20is%3Aopen%20label%3Aclosed%20&label=open&color=blue&logo=github) |
 
 ## How to Use Zeus Rotations.
 
