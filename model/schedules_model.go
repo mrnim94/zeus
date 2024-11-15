@@ -7,6 +7,7 @@ type RotationKey struct {
 type RestartWorkloads struct {
 	Kind string `yaml:"kind"`
 	Name string `yaml:"name"`
+	NamespaceOnK8s string `yaml:"namespaceOnK8s"`
 }
 
 type Locations struct {
