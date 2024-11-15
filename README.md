@@ -129,9 +129,9 @@ spec:
 |   | name |   | change-credetial-aws | String | Name of the schedule |
 |   | cron |   | \*/1 \* \* \* \* | Cron String | Cron schedule, runs every minute |
 |   | usernameOnAws |   | nimtechnology | String | AWS username |
-|   | namespaceOnK8s |   | default | String | Kubernetes namespace |
 |   | locations |   | \- (list of locations) | List | List of location configurations for the schedule |
 |   |   | secretName | credentials-aws | String | Name of the secret in Kubernetes |
+|   |   | namespaceOnK8s | default | String | Kubernetes namespace |
 |   |   | style | `CredentialOnK8s` or `AccessKeyOnK8s` | String | Style/type of the credential |
 |   |   | **credentialOnK8s** (require when style is `CredentialOnK8s`) | credentials | String | Key Name of Secret is holding AWS credential |
 |   |   | **profile** (require when style is `CredentialOnK8s`) | dev | String | AWS profile in credential that you want to change |
