@@ -35,17 +35,17 @@ func (rk *RotateKeyHandler) HandlerCreateDeleteKey() {
 			switch location.Style {
 			case "CredentialOnK8s":
 				log.Info("Action rotates credential: ", location.SecretName)
-				rk.K8s.UpdateCredentialInSecret(schedule.NamespaceOnK8s, location.SecretName, location.CredentialOnK8S, location.Profile, accessKey)
+				rk.K8s.UpdateCredentialInSecret(location.NamespaceOnK8s, location.SecretName, location.CredentialOnK8S, location.Profile, accessKey)
 
 			case "AccessKeyOnK8s":
 				log.Info("Update New Access Key ID:", *accessKey.AccessKey.AccessKeyId)
-				err = rk.K8s.UpdateSecret(schedule.NamespaceOnK8s, location.SecretName, location.AccessKeyOnK8S, *accessKey.AccessKey.AccessKeyId)
+				err = rk.K8s.UpdateSecret(location.NamespaceOnK8s, location.SecretName, location.AccessKeyOnK8S, *accessKey.AccessKey.AccessKeyId)
 				if err != nil {
 					log.Error(err)
 					return err
 				}
 				log.Info("Update New Secret Access Key: ******")
-				err = rk.K8s.UpdateSecret(schedule.NamespaceOnK8s, location.SecretName, location.SecretKeyOnK8S, *accessKey.AccessKey.SecretAccessKey)
+				err = rk.K8s.UpdateSecret(location.NamespaceOnK8s, location.SecretName, location.SecretKeyOnK8S, *accessKey.AccessKey.SecretAccessKey)
 				if err != nil {
 					log.Error(err)
 					return err
