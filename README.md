@@ -102,19 +102,21 @@ spec:
           - name: change-credetial-aws
             cron: "*/1 * * * *"
             usernameOnAws: nimtechnology
-            namespaceOnK8s: default
             locations:
               - secretName: credentials-aws
+                namespaceOnK8s: default
                 style: CredentialOnK8s
                 credentialOnK8s: credentials
                 profile: dev
               - secretName: secret-aws
+                namespaceOnK8s: custom-namespace
                 style: AccessKeyOnK8s
                 accessKeyOnK8s: accesskey
                 secretKeyOnK8s: secretkey
             restartWorkloads:
               - kind: deployment
                 name: "argo-workflow-argo-workflows-server"
+                namespaceOnK8s: workload-namespace
           - name: remove-access-key
             cron: "*/1 * * * *"
             usernameOnAws: nimtechnology
@@ -129,9 +131,9 @@ spec:
 |   | name |   | change-credetial-aws | String | Name of the schedule |
 |   | cron |   | \*/1 \* \* \* \* | Cron String | Cron schedule, runs every minute |
 |   | usernameOnAws |   | nimtechnology | String | AWS username |
-|   | namespaceOnK8s |   | default | String | Kubernetes namespace |
 |   | locations |   | \- (list of locations) | List | List of location configurations for the schedule |
 |   |   | secretName | credentials-aws | String | Name of the secret in Kubernetes |
+|   |   | namespaceOnK8s | default | String | Kubernetes namespace |
 |   |   | style | `CredentialOnK8s` or `AccessKeyOnK8s` | String | Style/type of the credential |
 |   |   | **credentialOnK8s** (require when style is `CredentialOnK8s`) | credentials | String | Key Name of Secret is holding AWS credential |
 |   |   | **profile** (require when style is `CredentialOnK8s`) | dev | String | AWS profile in credential that you want to change |
@@ -140,6 +142,7 @@ spec:
 |   | restartWorkloads |   | \- (list of workloads) | List | List of workloads to restart on schedule change |
 |   |   | kind | deployment | String | Type of the Kubernetes workload |
 |   |   | name | argo-workflow-argo-workflows-server | String | Name of the Kubernetes workload |
+|   |   | namespaceOnK8s | default | String | Kubernetes namespace |
 |   | **action** |   | nil/null **(optional)** | String | declaring an extra **action** field with the value **OnlyDeleteAccessKey**. Zeus rotation only do a work is remove Access Key of AWS's Acount |
 
 ## zeus-rotations on quay.io

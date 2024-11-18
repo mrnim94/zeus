@@ -90,14 +90,14 @@ config: {}
   #   - name: change-key-aws
   #     cron: "*/1 * * * *"
   #     usernameOnAws: nimtechnology
-  #     namespaceOnK8s: default
-  #     accessKeyOnK8s:
-  #       name: secret-aws
-  #       key: accesskey
-  #     secretKeyOnK8s:
-  #       name: secret-aws
-  #       key: secretkey
+  #       locations:
+  #         - accessKeyOnK8s: AWS_ACCESS_KEY_ID
+  #           secretKeyOnK8s: AWS_SECRET_ACCESS_KEY
+  #           secretName: my-secret
+  #           namespaceOnK8s: default
+  #           style: AccessKeyOnK8s
   #     restartWorkloads:
   #       - kind: deployment
   #         name: "argo-workflow-argo-workflows-server"
+  #         namespaceOnK8s: default
 

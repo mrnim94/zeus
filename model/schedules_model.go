@@ -7,6 +7,7 @@ type RotationKey struct {
 type RestartWorkloads struct {
 	Kind string `yaml:"kind"`
 	Name string `yaml:"name"`
+	NamespaceOnK8s string `yaml:"namespaceOnK8s"`
 }
 
 type Locations struct {
@@ -16,6 +17,7 @@ type Locations struct {
 	Profile         string `yaml:"profile,omitempty"`
 	AccessKeyOnK8S  string `yaml:"accessKeyOnK8s,omitempty"`
 	SecretKeyOnK8S  string `yaml:"secretKeyOnK8s,omitempty"`
+	NamespaceOnK8s  string `yaml:"namespaceOnK8s"`
 }
 
 type Schedule struct {
@@ -23,7 +25,6 @@ type Schedule struct {
 	Cron             string             `yaml:"cron"`
 	UsernameOnAws    string             `yaml:"usernameOnAws"`
 	Action           string             `yaml:"action"`
-	NamespaceOnK8s   string             `yaml:"namespaceOnK8s"`
 	Locations        []Locations        `yaml:"locations"`
 	RestartWorkloads []RestartWorkloads `yaml:"restartWorkloads"`
 }
