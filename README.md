@@ -102,19 +102,21 @@ spec:
           - name: change-credetial-aws
             cron: "*/1 * * * *"
             usernameOnAws: nimtechnology
-            namespaceOnK8s: default
             locations:
               - secretName: credentials-aws
+                namespaceOnK8s: default
                 style: CredentialOnK8s
                 credentialOnK8s: credentials
                 profile: dev
               - secretName: secret-aws
+                namespaceOnK8s: custom-namespace
                 style: AccessKeyOnK8s
                 accessKeyOnK8s: accesskey
                 secretKeyOnK8s: secretkey
             restartWorkloads:
               - kind: deployment
                 name: "argo-workflow-argo-workflows-server"
+                namespaceOnK8s: workload-namespace
           - name: remove-access-key
             cron: "*/1 * * * *"
             usernameOnAws: nimtechnology
