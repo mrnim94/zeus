@@ -140,6 +140,7 @@ spec:
 |   | restartWorkloads |   | \- (list of workloads) | List | List of workloads to restart on schedule change |
 |   |   | kind | deployment | String | Type of the Kubernetes workload |
 |   |   | name | argo-workflow-argo-workflows-server | String | Name of the Kubernetes workload |
+|   |   | namespaceOnK8s | default | String | Kubernetes namespace |
 |   | **action** |   | nil/null **(optional)** | String | declaring an extra **action** field with the value **OnlyDeleteAccessKey**. Zeus rotation only do a work is remove Access Key of AWS's Acount |
 
 ## zeus-rotations on quay.io
