@@ -2,7 +2,7 @@ module zeus
 
 go 1.22.0
 
-toolchain go1.22.4
+toolchain go1.24.3
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.30.3
